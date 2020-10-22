@@ -1,0 +1,10 @@
+version: '3'
+services:
+  python3:
+    build: .
+    container_name: 'python-blockchain'
+    working_dir: '/pyblockchain/'
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./pyblockchain:/pyblockchain
