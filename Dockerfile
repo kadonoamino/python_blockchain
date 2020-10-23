@@ -8,4 +8,4 @@ RUN pip3 install -r requirements.txt
 
 WORKDIR /pyblockchain
 
-CMD ["python", "blockchain.py"]
+#CMD ["python", "blockchain.py"]
