@@ -1,10 +1,25 @@
 version: '3'
 services:
-  python3:
+  blockchain_server_5000:
     build: .
-    container_name: 'python-blockchain'
+    container_name: 'blockchain_server_5000'
+    ports:
+      - "5000:5000"
     working_dir: '/pyblockchain/'
     tty: true
     stdin_open: true
     volumes:
       - ./pyblockchain:/pyblockchain
+    command: python3 blockchain_server.py
+
+  wallet_server_8080:
+    build: .
+    container_name: 'wallet_server_8080'
+    ports:
+      - "8080:8080"
+    working_dir: '/pyblockchain/'
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./pyblockchain:/pyblockchain
+    command: python3 wallet_server.py

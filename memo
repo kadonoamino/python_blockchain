@@ -1,1 +1,1 @@
-docker-compose run --rm python3 sh -c "python wallet.py"
+docker-compose run --rm python3 sh -c "python blockchain_server.py"

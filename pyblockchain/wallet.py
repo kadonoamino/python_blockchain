@@ -7,6 +7,7 @@ from ecdsa import SigningKey
 
 import utils
 
+
 class Wallet(object):
 
     def __init__(self):
@@ -17,7 +18,7 @@ class Wallet(object):
     @property
     def private_key(self):
         return self._private_key.to_string().hex()
-    
+
     @property
     def public_key(self):
         return self._public_key.to_string().hex()
@@ -25,7 +26,7 @@ class Wallet(object):
     @property
     def blockchain_address(self):
         return self._blockchain_address
-    
+
     def generate_blockchain_address(self):
         public_key_bytes = self._public_key.to_string()
         sha256_bpk = hashlib.sha256(public_key_bytes)
@@ -40,7 +41,7 @@ class Wallet(object):
         network_bitcoin_public_key = network_byte + ripemed160_bpk_hex
         network_bitcoin_public_key_bytes = codecs.decode(
             network_bitcoin_public_key, 'hex')
-        
+
         sha256_bpk = hashlib.sha256(network_bitcoin_public_key_bytes)
         sha256_bpk_digest = sha256_bpk.digest()
         sha256_2_nbpk = hashlib.sha256(sha256_bpk_digest)
@@ -52,12 +53,14 @@ class Wallet(object):
         address_hex = (network_bitcoin_public_key + checksum).decode('utf-8')
 
         blockchain_address = base58.b58encode(address_hex).decode('utf-8')
-        
         return blockchain_address
+
 
 class Transaction(object):
 
-    def __init__(self, sender_private_key, sender_public_key, sender_blockchain_address, recipient_blockchain_address, value):
+    def __init__(self, sender_private_key, sender_public_key,
+                 sender_blockchain_address, recipient_blockchain_address,
+                 value):
         self.sender_private_key = sender_private_key
         self.sender_public_key = sender_public_key
         self.sender_blockchain_address = sender_blockchain_address
@@ -73,13 +76,11 @@ class Transaction(object):
         })
         sha256.update(str(transaction).encode('utf-8'))
         message = sha256.digest()
-        private_key =SigningKey.from_string(
-            bytes().fromhex(self.sender_private_key), curve=NIST256p
-        )
+        private_key = SigningKey.from_string(
+            bytes().fromhex(self.sender_private_key), curve=NIST256p)
         private_key_sign = private_key.sign(message)
-        signature = private_key_sign.hex()
+        signature= private_key_sign.hex()
         return signature
-
 
 
 if __name__ == '__main__':
@@ -88,10 +89,9 @@ if __name__ == '__main__':
     wallet_B = Wallet()
     t = Transaction(
         wallet_A.private_key, wallet_A.public_key, wallet_A.blockchain_address,
-        wallet_B.blockchain_address, 1.0
-    )
+        wallet_B.blockchain_address, 1.0)
 
-    ##############Blockchain Node
+    ########### Blockchain Node
     import blockchain
     block_chain = blockchain.BlockChain(
         blockchain_address=wallet_M.blockchain_address)
@@ -100,8 +100,7 @@ if __name__ == '__main__':
         wallet_B.blockchain_address,
         1.0,
         wallet_A.public_key,
-        t.generate_signature()
-    )
+        t.generate_signature())
     print('Added?', is_added)
     block_chain.mining()
     utils.pprint(block_chain.chain)
