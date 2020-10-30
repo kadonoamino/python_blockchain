@@ -1,1 +1,1 @@
-docker-compose run --rm python3 sh -c "python blockchain_server.py"
+docker-compose run --rm blockchain_server_5000 sh -c "python utils.py"
